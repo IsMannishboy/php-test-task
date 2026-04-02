@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreTicketRequest;
-abstract class Controller
-{   
-    // get all tickets
-    public function index()
-    {
-    }
-    // store new one
+
+class TicketController extends Controller
+{
     public function store(StoreTicketRequest $request): JsonResponse
     {
         $customer = Customer::firstOrCreate(

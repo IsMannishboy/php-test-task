@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Http\Requests\StoreTicketRequest;
+use Illuminate\Http\JsonResponse;
+
 abstract class Controller
 {   
     // get all tickets
@@ -9,23 +11,5 @@ abstract class Controller
     {
     }
     // store new one
-    public function store(StoreTicketRequest $request): JsonResponse
-    {
-        $customer = Customer::firstOrCreate(
-            ['email' => $request->email],
-            ['name' => $request->name, 'phone' => $request->phone],
-            ['phone'=> $request->phone]
-        );
-        $ticket = Ticket::firstOrCreate([
-            'customer' => $customer->id,
-            'topic' => $request->topic,
-            'text' => $request->text,
-            'status'=> "new",
-            'response' => null,
-        ]);
-        if ($request->hasFile('attachment')) {
-            $ticket->addMedia($request->file('attachment'))->toMediaCollection('attachments');
-        }
-        return response()->json($ticket, 201);
-    }
+    
 }

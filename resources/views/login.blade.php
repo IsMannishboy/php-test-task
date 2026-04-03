@@ -24,14 +24,15 @@
 
         const formData = new FormData(this);
 
-        fetch('/api/login', {
+        fetch('/auth/login', {
             method: 'POST',
             body: formData,
         })
         .then(response => response.json())
         .then(data => {
-            if (data.message === 'Login successful') {
-                window.location.href = '/admin';
+            console.log(data);
+            if (data.user) {
+            window.location.href = '/admin';
             } else {
                 alert(data.message);
             }

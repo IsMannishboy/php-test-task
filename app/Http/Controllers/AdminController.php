@@ -14,8 +14,13 @@ class AdminController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            return response()->json(['message' => 'Login successful', 'user' => $user], 200);
+
+            $request->session()->regenerate();
+
+            return response()->json([
+                'message' => 'Login successful',
+                'user' => Auth::user()
+            ]);
         }
 
         return response()->json(['message' => 'Invalid credentials'], 401);

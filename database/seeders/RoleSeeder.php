@@ -1,26 +1,36 @@
 <?php
+namespace Database\Seeders;
+use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
-class RoleSeeder extends Seeder{
-public function run(): void
+class RoleSeeder extends Seeder
 {
-    // создаём права
-    $permissions = [
-        'create tickets',
-        'view tickets',
-        'delete tickets',
-        'update tickets',
-    ];
+    public function run(): void
+    {
+        $permissions = [
+            'create tickets',
+            'view tickets',
+            'delete tickets',
+            'update tickets',
+        ];
 
-    foreach ($permissions as $permission) {
-        Permission::firstOrCreate(['name' => $permission]);
+        $adminRole = Role::firstOrCreate([
+            'name' => 'admin',
+            'guard_name' => 'web',
+        ]);
+        $managerRole = Role::firstOrCreate([
+            'name' => 'manager',
+            'guard_name' => 'web',
+        ]);
+
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]);
+        }
+
+        $adminRole->syncPermissions(Permission::all());
     }
-
-    // создаём роль admin
-    $adminRole = Role::firstOrCreate(['name' => 'admin']);
-
-    // даём все права
-    $adminRole->givePermissionTo(Permission::all());
-}
 }

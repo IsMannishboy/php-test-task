@@ -8,6 +8,8 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\CustomerSeeder;
 use Database\Seeders\UserSeeder;
 use Database\Seeders\TicketSeeder;
+use Database\Seeders\RoleSeeder;
+
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +21,7 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            RoleSeeder::class,
             UserSeeder::class,
             CustomerSeeder::class,
             TicketSeeder::class,

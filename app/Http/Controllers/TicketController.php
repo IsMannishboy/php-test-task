@@ -27,12 +27,8 @@ class TicketController extends Controller
             ]
         );
         if ($request->hasFile('attachment')) {
-<<<<<<< HEAD
-            $ticket->addMedia($request->file('attachment'))->toMediaCollection('attachments');
-=======
+
             $ticket->addMedia($request->file('attachment'))->toMediaCollection('attachments','public');
-        }else {
->>>>>>> tickets-logic
         }
         return response()->json($ticket, 201);
     }

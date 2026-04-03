@@ -21,7 +21,7 @@ class StoreTicketRequest extends FormRequest
         'phone' => 'required|string',
         'topic' => 'required|string',
         'text' => 'required|string',
-        'attachment' => 'nullable|file|mimes:jpg,png,pdf|max:2048',
+        'attachment' => 'nullable|file|mimes:jpg,png,pdf,txt|max:2048',
     ];
 }
 }

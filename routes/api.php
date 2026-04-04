@@ -2,5 +2,5 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TicketController;
-Route::post('/tickets', [TicketController::class, 'store']);
+Route::post('/tickets', [TicketController::class, 'store'])->middleware("request_limiter");
 Route::get('/tickets/statistic', [TicketController::class, 'statistic']);

@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Ticket;
-use App\Models\User;
+use App\Models\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,7 +16,7 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            'customer_id' => User::factory(), 
+            'customer_id' => Customer::factory(), 
             'topic' => $this->faker->sentence(3),
             'text' => $this->faker->paragraph(),
             'status' => $this->faker->randomElement(['new', 'pending', 'done']),

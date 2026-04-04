@@ -17,8 +17,15 @@ use Illuminate\Notifications\Notifiable;
 class Ticket extends Model implements HasMedia
 {
             use InteractsWithMedia , HasFactory;
-             
-
+    protected $appends = ['attachment','attachment_url'];
+    public function getAttachmentAttribute()
+    {
+        return $this->getFirstMedia('attachments')?->file_name ?? 'no file';
+    }
+    public function getAttachmentUrlAttribute()
+    {
+        return $this->getFirstMedia('attachments')?->getUrl() ?? '#';
+    }
     public function customer()
     {
         return $this->belongsTo(Customer::class);

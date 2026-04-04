@@ -32,5 +32,6 @@ class RoleSeeder extends Seeder
         }
 
         $adminRole->syncPermissions(Permission::all());
+        $managerRole->syncPermissions(['view tickets','update tickets']);
     }
 }

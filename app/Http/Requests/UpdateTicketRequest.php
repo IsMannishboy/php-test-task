@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreTicketRequest extends FormRequest
+class UpdateTicketRequest extends FormRequest
 {
     
     /**
@@ -16,13 +16,9 @@ class StoreTicketRequest extends FormRequest
     public function rules(): array
 {
     return [
-        'name' => 'required|string',
-        'email' => 'required|email',
-        'phone' => 'required|string',
-        'topic' => 'required|string',
-        'text' => 'required|string',
-        
-        'attachment' => 'nullable|file|mimes:jpg,png,pdf,txt|max:2048',
+        'status' => 'nullable|string|in:new,processing,done,all',
+        'topic' => 'nullable|string',
+        'text' => 'nullable|string',
 
     ];
 }

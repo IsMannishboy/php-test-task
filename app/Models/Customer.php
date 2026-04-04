@@ -15,5 +15,6 @@ class Customer extends Model implements HasMedia
         'name',
         'email',
         'phone',
+        'last_request'
     ];
 }

@@ -79,6 +79,11 @@ document.getElementById('contact-form').addEventListener('submit', async functio
         method: 'POST',
         body: formdata
     });
+    if(!resp.ok) {
+        console.error('Error submitting form:', resp.statusText);
+        return;
+    }
+    alert('Form submitted successfully!');
 
     const data = await resp.json();
     console.log(data);

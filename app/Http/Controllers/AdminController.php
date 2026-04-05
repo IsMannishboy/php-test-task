@@ -18,13 +18,10 @@ class AdminController extends Controller
         if (Auth::attempt($credentials)) {
 
             $request->session()->regenerate();
-            $user = Auth::user();
-            $roles = $user->roles->pluck('name');
-            $request->session()->put('roles', $roles);
             return response()->json([
                 'message' => 'Login successful',
-                'user' => Auth::user(),
-                'roles' => $roles
+                'user' => Auth::user()
+                
             ]);
         }
 

@@ -107,7 +107,7 @@ applyFilters.onclick = async ()=>{
     const date = document.getElementById("date-filter").value;
     const email = document.getElementById("email-filter").value;
     const phone = document.getElementById("phone-filter").value;
-    
+    console.log(date)
     const response = await fetch(`/tickets/filters`,{
         method:"GET",
         headers :{
@@ -115,7 +115,7 @@ applyFilters.onclick = async ()=>{
             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
             "customerId": customerId,
             "status": status,
-            "date": date,
+            "X-Date": date,
             "email": email,
             "phone": phone
         }
@@ -166,21 +166,25 @@ applyFilters.onclick = async ()=>{
             ticketsList.appendChild(
                 createRow("customer id:", ticket.customer_id, `${ticket.customer_id}-customer_id`)
             );
-             const attachmentLi = document.createElement("li");
+            const attachmentLi = document.createElement("li");
 
-            const label = document.createElement("span");
+            const label = document.createElement("li");
             label.textContent = "attachment: ";
 
             const link = document.createElement("a");
             link.href = ticket.attachment_url; 
-            link.target = "_blank";
             link.textContent = ticket.attachment;
+
+            const downloadBtn = document.createElement("a");
+            downloadBtn.href = `http://localhost:8000/tickets/${ticket.id}/download`;
+            downloadBtn.textContent = "Download";
+           
 
             attachmentLi.appendChild(label);
             attachmentLi.appendChild(link);
+            attachmentLi.appendChild(downloadBtn);
 
             ticketsList.appendChild(attachmentLi);
-
             const editButton = document.createElement("button");
             editButton.textContent = "Edit";
             editButton.classList.add("edit-button");
@@ -228,6 +232,7 @@ save.onclick = async ()=>{
         for(changes in resp.changes){
             document.getElementById(`${ticketId}-${changes}`).textContent = resp.changes[changes]
         }
+        EditZone.style.display = "none";
 
     }else{
         alert(response.statusText," wrong data");

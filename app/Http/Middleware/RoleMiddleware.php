@@ -13,12 +13,14 @@ class RoleMiddleware
      *
      * @param  Closure(Request): (Response)  $next
      */
-    public function handle(Request $request, Closure $next,$role): Response
-    {   
-        $roles = $request->session()->get('roles', []);
-        if (in_array($role, $roles)) {
-            return $next($request);
+    public function handle(Request $request, Closure $next, $role): Response
+    {
+        if (!$request->user() || !$request->user()->hasRole($role)) {
+            return response()->json([
+                'message' => 'you must to be ' . $role
+            ], 403);
         }
-        return response()->json(['message' => 'you must to be ' . $role], 403);
+
+        return $next($request);
     }
 }

@@ -80,8 +80,13 @@ document.getElementById('contact-form').addEventListener('submit', async functio
         body: formdata
     });
     if(!resp.ok) {
-        console.error('Error submitting form:', resp.statusText);
-        return;
+        if(resp.status === 429){
+            alert("too many requests,try again tomorrow")
+            return;
+        }
+            alert('Failed to submit form. Please try later.');
+            console.log(await resp.text());
+            return;
     }
     alert('Form submitted successfully!');
 

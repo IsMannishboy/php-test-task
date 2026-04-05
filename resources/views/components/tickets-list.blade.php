@@ -79,7 +79,7 @@
                         {{ $ticket->getFirstMedia('attachments')->file_name }}
                     </a>
 
-                    <a href="/tickets/{{ $ticket->id }}/download">
+                    <a href="/api/tickets/{{ $ticket->id }}/download">
                         Download
                     </a>
                 @else
@@ -175,14 +175,15 @@ applyFilters.onclick = async ()=>{
             link.href = ticket.attachment_url; 
             link.textContent = ticket.attachment;
 
-            const downloadBtn = document.createElement("a");
-            downloadBtn.href = `http://localhost:8000/tickets/${ticket.id}/download`;
-            downloadBtn.textContent = "Download";
-           
+            if(ticket.attachment) {
+                     const downloadBtn = document.createElement("a");
+                        downloadBtn.href = `http://0.0.0.0:8000/tickets/${ticket.id}/download`;
+                        downloadBtn.textContent = "Download";
+                        attachmentLi.appendChild(downloadBtn);
+            }
 
             attachmentLi.appendChild(label);
             attachmentLi.appendChild(link);
-            attachmentLi.appendChild(downloadBtn);
 
             ticketsList.appendChild(attachmentLi);
             const editButton = document.createElement("button");

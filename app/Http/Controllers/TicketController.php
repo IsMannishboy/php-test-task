@@ -38,7 +38,7 @@ class TicketController extends Controller
     {
         
         $changes = $request->only(['topic', 'text', 'status']);
-        Ticket::where('id',$id)->update($changes);
+         Ticket::where('id',$id)->update($changes);
         return response()->json(['message' => 'Ticket updated successfully', 'changes' => $changes]);
     }
 

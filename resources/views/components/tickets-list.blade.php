@@ -100,6 +100,7 @@
     </div>
 </div>
 <script>
+const URL = "http://localhost:8000";
 let applyFilters = document.getElementById("apply-filters");
 applyFilters.onclick = async ()=>{
     const customerId = document.getElementById("customer-id-filter").value;
@@ -143,6 +144,9 @@ applyFilters.onclick = async ()=>{
         const ticketsList = document.getElementById("tickets-list");
         ticketsList.innerHTML = "";
         tickets.forEach(ticket => {
+            console.log(ticket.attachment_url)
+            console.log(ticket.attachment)
+            console.log(ticket)
             ticketsList.appendChild(
                 createRow("ticket id:", ticket.id, `${ticket.id}-id`)
             );
@@ -175,17 +179,18 @@ applyFilters.onclick = async ()=>{
             link.href = ticket.attachment_url; 
             link.textContent = ticket.attachment;
 
-            if(ticket.attachment) {
+            if(ticket.attachment_url !== "#") {
                      const downloadBtn = document.createElement("a");
-                        downloadBtn.href = `http://0.0.0.0:8000/tickets/${ticket.id}/download`;
+                        downloadBtn.href = `${URL}/api/tickets/${ticket.id}/download`;
                         downloadBtn.textContent = "Download";
                         attachmentLi.appendChild(downloadBtn);
+                                    ticketsList.appendChild(attachmentLi);
+
             }
 
             attachmentLi.appendChild(label);
             attachmentLi.appendChild(link);
 
-            ticketsList.appendChild(attachmentLi);
             const editButton = document.createElement("button");
             editButton.textContent = "Edit";
             editButton.classList.add("edit-button");

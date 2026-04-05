@@ -17,8 +17,7 @@ class TicketController extends Controller
     {
         $customer = Customer::firstOrCreate(
             ['email' => $request->email],
-            ['name' => $request->name, 'phone' => $request->phone]
-        
+            ['name' => $request->name, 'phone' => $request->phone,'last_request' => now()]
         );
         $ticket = Ticket::create(
 
@@ -82,10 +81,9 @@ class TicketController extends Controller
     {
         $customerId = $request->header('customerId')?? null;
         $status     = $request->header('status')?? null;
-        $date       = $request->header('date')?? null;
+        $date       = $request->header('X-Date');
         $email      = $request->header('email')?? null;
         $phone      = $request->header('phone')?? null;
-
         $query = Ticket::with(['customer','media']);
 
         if ($customerId) {
@@ -95,7 +93,7 @@ class TicketController extends Controller
             $query->where('status', $status);
         }
         if ($date) {
-            $query->where('created_at', '>=', $date);
+            $query->where('created_at', '>', $date);
         }
         if ($email) {
             $query->whereHas('customer', function ($q) use ($email) {

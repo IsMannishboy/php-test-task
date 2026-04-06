@@ -76,7 +76,7 @@ document.getElementById('contact-form').addEventListener('submit', async functio
     for (let [key, value] of formdata.entries()) {
         console.log(key, value);
     }
-
+    const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const resp = await fetch('/api/tickets', {
         method: 'POST',
           headers: {

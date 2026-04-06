@@ -15,6 +15,7 @@ Route::get('/widget', function () {
 Route::get('/login', function () {
     return view('login');
 })->name('login');
-Route::post('/auth/login', [AdminController::class, 'login']);
-
+Route::get('/page-with-widget',function(){
+    return view('test-widget');
+});
 

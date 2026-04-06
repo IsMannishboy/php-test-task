@@ -1,63 +1,99 @@
-<<<<<<< HEAD
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+#####DESCRIPTION#########
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+simple crm system is created
+this service allows :to send tickets,requset_limmiter implemented so each customer can send only one ticket per day,
+manage tickets in admin panel,only manager can visit this page,so added role middleware.here such opperations are allowed:change status,text,topic,filter tickets,check and download files
 
-## About Laravel
+######STRUCTURE#######
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+all relationsheeps are provided as it metioned in the task:
+tickets have foreign key customer_id and all files binded to their tickets
+there are migrations,seeds,
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+USER SEEDER:
+        User::factory()->count(5)->create();
+        $user = User::factory()->create([
+            'name' => 'admin',
+            'email' => 'admin@example.com',
+            'password' => bcrypt('1234'),
+        ]);
+        $user->assignRole('admin');
+        $manager = User::factory()->create([
+            'name' => 'manager',
+            'email' => 'manager@example.com',
+            'password' => bcrypt('1234'),
+        ]);
+        $manager->assignRole('manager');
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+ROLE SEEDER:
 
-## Learning Laravel
+ $permissions = [
+            'create tickets',
+            'view tickets',
+            'delete tickets',
+            'update tickets',
+        ];
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+        $adminRole = Role::firstOrCreate([
+            'name' => 'admin',
+            'guard_name' => 'web',
+        ]);
+        $managerRole = Role::firstOrCreate([
+            'name' => 'manager',
+            'guard_name' => 'web',
+        ]);
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate([
+                'name' => $permission,
+                'guard_name' => 'web',
+            ]);
+        }
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+        $adminRole->syncPermissions(Permission::all());
+        $managerRole->syncPermissions(['view tickets','update tickets']);
 
-## Agentic Development
+CUSTOMER SEEDER:
+Customer::factory()->count(5)->create();
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+TICKET SEEDER:
+ $customer = Customer::factory()->create();
 
-```bash
-composer require laravel/boost --dev
+    Ticket::factory()
+        ->count(5)
+        ->for($customer, 'customer')
+        ->create();
 
-php artisan boost:install
-```
+DB SEEDER:
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+        $this->call([
+            RoleSeeder::class,
+            UserSeeder::class,
+            CustomerSeeder::class,
+            TicketSeeder::class,
+        ]);
+for roles spatie/laravel-permission is used
+this library allows to mange roles and their permissions statefull in db,there special,roles,permissions,model_has_roles tables are created
 
-## Contributing
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+all logic devided on controllers,models and services,controllers use models only via services 
 
-## Code of Conduct
+created special request classes(TicketsWIthFiltersRequest,UpdateTicketRequest) for check post data
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+added additional middleware : role middleware which chekc if user have a requaired role(manager)
 
-## Security Vulnerabilities
+auth via sessions,session storage: postgres
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+main page divided by components
 
-## License
+cors config allows to inplement widget in another domains
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-=======
-this is a simple laravel application runnig in docker
-postgres is used as main db
->>>>>>> tickets-logic
+spatie/laravel-medialibrary is used for manage files.This library provides a media table where file data is stored
+this library is used along with php storage
+#####TESTS#####
+there future TicketTest class is provided,all tests passed
+######LAUNCH INSTRUCTION###########
+composer install
+php atisan serve
+if you want to run in docker 
+

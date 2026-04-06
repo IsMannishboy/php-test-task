@@ -93,7 +93,25 @@ this library is used along with php storage
 #####TESTS#####
 there future TicketTest class is provided,all tests passed
 ######LAUNCH INSTRUCTION###########
+git clone https://github.com/IsMannishboy/php-test-task
+cd php-test-task
 composer install
-php atisan serve
-if you want to run in docker 
+cp .env.example .env
+(set up env file)
+php artisan key:generate
+php artisan migrate:fresh
+php artisan db:seed
+php artisan storage:link
+php artisan serve
+if you want to run in docker you can set up env file and build the image
+
+after you have applied start.sh you may have to remove storage an make new one 
+
+start.sh script is used for apllying migrations,seeds and storage via cli
+if there permission error arrise you can run: chmod -R $USER:$USER on your own host
+####CONCLUSION######
+while this test task i got fammiliar with spatie/laravel permission,medialibrary libraries,improved my development skills,untedrsdoot how to work with laravel php in docker
+####ISSUES######
+ui isnt as good as i wanted to make
+
 

@@ -97,7 +97,7 @@ git clone https://github.com/IsMannishboy/php-test-task
 cd php-test-task
 composer install
 cp .env.example .env
-(set up env file)
+(set up env file DB_CONNECTION=pgsql ,SESSION_DRIVER=database)
 php artisan key:generate
 php artisan migrate:fresh
 php artisan db:seed

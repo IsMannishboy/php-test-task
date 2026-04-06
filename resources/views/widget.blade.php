@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Widget</title>
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 
 
@@ -77,6 +79,9 @@ document.getElementById('contact-form').addEventListener('submit', async functio
 
     const resp = await fetch('/api/tickets', {
         method: 'POST',
+          headers: {
+        'X-CSRF-TOKEN': token
+         },
         body: formdata
     });
     if(!resp.ok) {

@@ -2,6 +2,8 @@
 <html>
 <head>
     <title>Admin Login</title>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 <body>
     <form id="login-form" method="POST">
@@ -23,9 +25,13 @@
         event.preventDefault();
 
         const formData = new FormData(this);
-
+        const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
         fetch('/auth/login', {
             method: 'POST',
+               
+            headers: {
+        'X-CSRF-TOKEN': token
+         },
             body: formData,
         })
         .then(response => response.json())

@@ -1,24 +1,27 @@
 const URL = "http://localhost:8000";
 let applyFilters = document.getElementById("apply-filters");
 applyFilters.onclick = async ()=>{
-    const customerId = document.getElementById("customer-id-filter").value;
+   const customerId = document.getElementById("customer-id-filter").value;
     const status = document.getElementById("status-filter").value;
     const date = document.getElementById("date-filter").value;
     const email = document.getElementById("email-filter").value;
     const phone = document.getElementById("phone-filter").value;
-    console.log(date)
-    const response = await fetch(`/tickets/filters`,{
-        method:"GET",
-        headers :{
-            "Content-Type":"application/json",
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-            "customerId": customerId,
-            "status": status,
-            "X-Date": date,
-            "email": email,
-            "phone": phone
+
+    const params = new URLSearchParams();
+
+    if (customerId) params.append('customerId', customerId);
+    if (status) params.append('status', status);
+    if (date) params.append('date', date);
+    if (email) params.append('email', email);
+    if (phone) params.append('phone', phone);
+
+    const response = await fetch(`/tickets/filters?${params.toString()}`, {
+        method: "GET",
+        headers: {
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content
         }
     });
+
     if(!response.ok){
         console.log(response)
         return

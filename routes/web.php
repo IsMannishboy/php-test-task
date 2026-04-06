@@ -18,4 +18,5 @@ Route::get('/login', function () {
 Route::get('/page-with-widget',function(){
     return view('test-widget');
 });
+Route::post('/auth/login', [AdminController::class, 'login']);
 
